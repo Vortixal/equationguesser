@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Equation Guesser</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        text-align: center;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    #equation {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    p#result {
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h2>Math Equation Guesser</h2>
+        <div id="equation"></div>
+        <input type="text" id="userAnswer" placeholder="Your Answer">
+        <button onclick="checkAnswer()">Check</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function generateEquation() {
+            const operators = ['+', '-', 'x', '/'];
+            const operator = operators[Math.floor(Math.random() * operators.length)];
+            let num1 = Math.floor(Math.random() * 10);
+            let num2 = Math.floor(Math.random() * 10);
+            let equation;
+
+            switch (operator) {
+                case '+':
+                    equation = `${num1} ${operator} ${num2}`;
+                    break;
+                case '-':
+                    equation = `${num1 + num2} ${operator} ${num1}`;
+                    break;
+                case 'x':
+                    equation = `${num1} ${operator} ${num2}`;
+                    break;
+                case '/':
+                    equation = `${num1 * num2} ${operator} ${num2}`;
+                    break;
+            }
+
+            document.getElementById('equation').textContent = `Solve: ${equation}`;
+            sessionStorage.setItem('answer', eval(equation));
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('userAnswer').value;
+            const correctAnswer = sessionStorage.getItem('answer');
+            const resultDisplay = document.getElementById('result');
+
+            if (userAnswer === correctAnswer) {
+                resultDisplay.textContent = "Correct!";
+            } else {
+                resultDisplay.textContent = "Incorrect. Try again!";
+            }
+
+            generateEquation();
+            document.getElementById('userAnswer').value = '';
+        }
+
+        // Generate the first equation when the page loads
+        generateEquation();
+    </script>
+</body>
+</html>
